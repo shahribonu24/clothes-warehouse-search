@@ -96,4 +96,12 @@ entity      Product → Clothing → Jacket / Jeans, Product → Footwear → Sn
 
 | Date | Work done |
 | --- | --- |
-| 2026-11-01 | Project skeleton, readme, .gitignore, report. |
+| 2026-11-01 | Project skeleton, readme, .gitignore, report (checkpoint #1). |
+| 2026-11-01 | Entity hierarchy: Product → Clothing/Footwear → Jacket, Jeans, Sneakers, Boots; Waterproof interface; Category enum; entity tests. |
+| 2026-11-01 | DAO layer (checkpoint #2): SearchCriteria and Parameter hierarchies, CSV source, mappers, DaoFactory; test CSV files in `src/test/resources`; DAO tests. |
+
+## 6. Next Steps
+
+* Service layer and its tests (checkpoint #3).
+* Controller layer and its tests.
+* View layer, startup layer, final data files.

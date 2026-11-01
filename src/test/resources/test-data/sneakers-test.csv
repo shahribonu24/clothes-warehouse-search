@@ -1,0 +1,4 @@
+id,name,brand,color,gender,material,price,quantity,shoe_size,sport
+201,Air Max 90,Nike,White,MEN,Leather,129.99,8,42.5,LIFESTYLE
+202,Ultraboost Light,Adidas,Black,WOMEN,Primeknit,179.99,4,38,RUNNING
+203,Gel-Resolution 9,Asics,Blue,UNISEX,Synthetic,139.00,0,44,TENNIS

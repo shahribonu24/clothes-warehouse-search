@@ -1,0 +1,4 @@
+id,name,brand,color,gender,material,price,quantity,size,season,waist,length,fit
+101,501 Original,Levi's,Blue,MEN,Cotton,79.90,12,L,ALL_SEASON,32,34,STRAIGHT
+102,Skinny High Rise,Zara,Black,WOMEN,Cotton blend,39.99,7,S,ALL_SEASON,26,30,SKINNY
+103,Relaxed Carpenter,Carhartt,Brown,MEN,Denim,95.00,2,XL,DEMI_SEASON,36,32,RELAXED

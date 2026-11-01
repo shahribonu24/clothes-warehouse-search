@@ -1,0 +1,7 @@
+# Test inventory: jackets
+id,name,brand,color,gender,material,price,quantity,size,season,waterproof,hooded
+1,Storm Parka,Columbia,Black,MEN,Polyester,149.99,3,L,WINTER,true,true
+2,Denim Jacket,Levi's,Blue,UNISEX,Cotton,89.50,10,M,DEMI_SEASON,false,false
+3,Light Windbreaker,Nike,Red,WOMEN,Nylon,59.00,0,S,SUMMER,true,true
+
+4,Puffer Coat,The North Face,Black,WOMEN,Nylon,229.00,5,M,WINTER,true,true

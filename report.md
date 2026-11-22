@@ -99,9 +99,54 @@ entity      Product → Clothing → Jacket / Jeans, Product → Footwear → Sn
 | 2026-11-01 | Project skeleton, readme, .gitignore, report (checkpoint #1). |
 | 2026-11-01 | Entity hierarchy: Product → Clothing/Footwear → Jacket, Jeans, Sneakers, Boots; Waterproof interface; Category enum; entity tests. |
 | 2026-11-01 | DAO layer (checkpoint #2): SearchCriteria and Parameter hierarchies, CSV source, mappers, DaoFactory; test CSV files in `src/test/resources`; DAO tests. |
+| 2026-11-22 | Service layer (checkpoint #3): `ProductService` interface, `ProductServiceImpl`, `ServiceFactory`, `ServiceException`; search across several categories, `Selection` (sorting asc/desc by any field + top/bottom k), inventory statistics and cost. |
+| 2026-11-22 | Controller layer (checkpoint #3): `Controller` interface, `ControllerImpl`, `ControllerFactory`, `Request` / `Response`; Command pattern (`help`, `list`, `find`, `stats`, `cost`, `exit`) with `CommandProvider`; parsers of requests, targets, parameters and sort options; table formatters. |
+| 2026-11-22 | Tests of the service layer (real DAO over test CSV files) and of the controller layer (unit tests with a stub service + integration tests of the use cases). 189 tests in total. |
 
-## 6. Next Steps
+## 6. Checkpoint #3 — Service and Controller Layers
 
-* Service layer and its tests (checkpoint #3).
-* Controller layer and its tests.
-* View layer, startup layer, final data files.
+### Service layer (`com.epam.warehouse.service`)
+
+| Type | Kind | Purpose |
+| --- | --- | --- |
+| `ProductService` | interface | `find`, `findAll`, `statistics`, `cost` over a set of categories |
+| `ProductServiceImpl` | implementation | gets a DAO per category from `DaoFactory`, builds criteria with `CriteriaFactory`, merges results |
+| `ServiceFactory` | factory (singleton) | single access point to the service implementation |
+| `ServiceException` | exception | wraps `DaoException`, so upper layers don't depend on the DAO |
+| `Selection`, `SortField`, `SortDirection` | value types | sorting asc/desc by any field, ties by id; `top`/`bottom` k |
+| `CategoryStatistics`, `InventoryStatistics` | value types | lines, units, out-of-stock lines, stock value, totals |
+
+Business rule: a parameter must apply to at least one requested category; categories it can't apply
+to are skipped (`find all waterproof=true` searches jackets and boots only), and if it applies to none
+an error is returned (`find sneakers waterproof=true`).
+
+### Controller layer (`com.epam.warehouse.controller`)
+
+| Type | Kind | Purpose |
+| --- | --- | --- |
+| `Controller` | interface | `Response execute(String request)` — never throws on bad input |
+| `ControllerImpl` | implementation | parses the request, picks a command, turns exceptions into error responses |
+| `ControllerFactory` | factory (singleton) | wires the controller with the service from `ServiceFactory` |
+| `Request`, `Response` | value types | parsed request; status (`OK`, `ERROR`, `EXIT`) + message |
+| `Command`, `CommandName`, `CommandProvider` | Command pattern | `help`, `list`, `find`, `stats`, `cost`, `exit` |
+| `RequestParser`, `TargetParser`, `ParameterType`, `ParameterParser`, `SelectionParser`, `ValueParser` | parsers | text → categories, DAO parameters, selection |
+| `TableFormatter`, `ProductFormatter`, `StatisticsFormatter` | formatters | aligned text tables |
+
+### Optional ideas implemented (bonus)
+
+* `find` attributes: sorting `sort=<field> order=asc|desc` and `top=k` / `bottom=k`.
+* `cost` command: total cost of the products matching any criteria (`cost clothing season=WINTER`).
+* `stats` command with criteria.
+
+### Tests
+
+* `SelectionTest`, `ProductServiceImplTest` — service layer with the real DAO over the test CSV files,
+  including DAO failures wrapped into `ServiceException`.
+* `ControllerUnitTest` — controller in isolation with a stub service (checks what is passed to the service).
+* `ControllerIntegrationTest` — controller + service + DAO, the use cases from section 3.
+* `RequestParserTest`, `ValueParserTest`, `TargetParserTest`, `ParameterParserTest`, `SelectionParserTest`, `FormatterTest`.
+
+## 7. Next Steps
+
+* View layer (console view, input validation, batch mode).
+* Startup layer (`Main`, wiring of DAOs to the real data files), final data files.
